@@ -1,12 +1,50 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
+  const [rating, setRating] = useState<number | null>(null);
+  const [review, setReview] = useState('');
+  const { toast } = useToast();
+
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSubmitReview = () => {
+    if (rating === null) {
+      toast({
+        title: 'Выберите оценку',
+        description: 'Пожалуйста, выберите оценку от 0 до 10',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!review.trim()) {
+      toast({
+        title: 'Напишите отзыв',
+        description: 'Поле отзыва не может быть пустым',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const mailtoLink = `mailto:support@modbusrw.ru?subject=Отзыв о Modbus RW (Оценка: ${rating}/10)&body=${encodeURIComponent(review)}`;
+    window.location.href = mailtoLink;
+
+    toast({
+      title: 'Спасибо за отзыв!',
+      description: 'Ваш почтовый клиент должен открыться',
+    });
+
+    setRating(null);
+    setReview('');
   };
 
   const features = [
@@ -93,9 +131,11 @@ const Index = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-primary rounded flex items-center justify-center">
-                <Icon name="Activity" size={18} className="text-primary-foreground" />
-              </div>
+              <img 
+                src="https://cdn.poehali.dev/files/Logo.png" 
+                alt="Modbus RW Logo" 
+                className="w-8 h-8"
+              />
               <span className="text-lg font-medium">Modbus RW</span>
             </div>
             <div className="hidden md:flex items-center gap-6 text-sm">
@@ -111,6 +151,9 @@ const Index = () => {
               <button onClick={() => scrollToSection('docs')} className="hover:text-primary transition-colors">
                 Документация
               </button>
+              <button onClick={() => scrollToSection('review')} className="hover:text-primary transition-colors">
+                Отзывы
+              </button>
               <button onClick={() => scrollToSection('contact')} className="hover:text-primary transition-colors">
                 Контакты
               </button>
@@ -121,6 +164,11 @@ const Index = () => {
 
       <section id="home" className="pt-40 pb-24 px-6">
         <div className="container mx-auto max-w-4xl text-center">
+          <img 
+            src="https://cdn.poehali.dev/files/Logo.png" 
+            alt="Modbus RW Logo" 
+            className="w-20 h-20 mx-auto mb-6"
+          />
           <Badge className="mb-6" variant="secondary">Версия 2.5</Badge>
           <h1 className="text-5xl md:text-6xl font-light tracking-tight mb-6">
             Modbus RW
@@ -228,7 +276,55 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="contact" className="py-20 px-6">
+      <section id="review" className="py-20 px-6">
+        <div className="container mx-auto max-w-3xl">
+          <h2 className="text-3xl font-light text-center mb-12">Оставьте отзыв</h2>
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle className="text-xl font-medium text-center">Оцените программу</CardTitle>
+              <CardDescription className="text-center">Ваше мнение поможет нам стать лучше</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <label className="text-sm font-medium">Оценка от 0 до 10</label>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => setRating(num)}
+                      className={`w-12 h-12 rounded-lg border-2 transition-all ${
+                        rating === num
+                          ? 'bg-primary text-primary-foreground border-primary scale-110'
+                          : 'border-border hover:border-primary'
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Ваш отзыв</label>
+                <Textarea
+                  placeholder="Расскажите о вашем опыте использования программы..."
+                  value={review}
+                  onChange={(e) => setReview(e.target.value)}
+                  rows={5}
+                  className="resize-none"
+                />
+              </div>
+
+              <Button size="lg" className="w-full" onClick={handleSubmitReview}>
+                <Icon name="Send" size={18} className="mr-2" />
+                Отправить отзыв
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section id="contact" className="py-20 px-6 bg-muted/40">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-light mb-12">Контакты</h2>
           <Card className="border-2">
@@ -238,7 +334,7 @@ const Index = () => {
               <CardDescription className="text-base">support@modbusrw.ru</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button size="lg" className="w-full">
+              <Button size="lg" className="w-full" onClick={() => window.location.href = 'mailto:support@modbusrw.ru'}>
                 <Icon name="Send" size={18} className="mr-2" />
                 Написать нам
               </Button>
@@ -251,9 +347,11 @@ const Index = () => {
         <div className="container mx-auto max-w-5xl">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-                <Icon name="Activity" size={14} className="text-primary-foreground" />
-              </div>
+              <img 
+                src="https://cdn.poehali.dev/files/Logo.png" 
+                alt="Modbus RW Logo" 
+                className="w-6 h-6"
+              />
               <span className="font-medium">Modbus RW</span>
             </div>
             <p>© 2024 Modbus RW. Все права защищены.</p>
