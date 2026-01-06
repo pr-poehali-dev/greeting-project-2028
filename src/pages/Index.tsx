@@ -132,9 +132,9 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <img 
-                src="https://cdn.poehali.dev/files/Logo.png" 
+                src="https://cdn.poehali.dev/projects/4faf5c80-ce6f-4106-8932-f28a0a7b85a6/files/d9cf70c2-acd8-418a-82d6-bb42f46fd723.jpg" 
                 alt="Modbus RW Logo" 
-                className="w-8 h-8"
+                className="w-7 h-7 rounded"
               />
               <span className="text-lg font-medium">Modbus RW</span>
             </div>
@@ -164,11 +164,6 @@ const Index = () => {
 
       <section id="home" className="pt-40 pb-24 px-6">
         <div className="container mx-auto max-w-4xl text-center">
-          <img 
-            src="https://cdn.poehali.dev/files/Logo.png" 
-            alt="Modbus RW Logo" 
-            className="w-20 h-20 mx-auto mb-6"
-          />
           <Badge className="mb-6" variant="secondary">Версия 2.5</Badge>
           <h1 className="text-5xl md:text-6xl font-light tracking-tight mb-6">
             Modbus RW
@@ -348,13 +343,12 @@ const Index = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <img 
-                src="https://cdn.poehali.dev/files/Logo.png" 
+                src="https://cdn.poehali.dev/projects/4faf5c80-ce6f-4106-8932-f28a0a7b85a6/files/d9cf70c2-acd8-418a-82d6-bb42f46fd723.jpg" 
                 alt="Modbus RW Logo" 
-                className="w-6 h-6"
+                className="w-6 h-6 rounded"
               />
               <span className="font-medium">Modbus RW</span>
             </div>
-            <p>© 2024 Modbus RW. Все права защищены.</p>
           </div>
         </div>
       </footer>
